@@ -12,12 +12,42 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractFOSRestController
 {
     /**
-     * @Annotations\Get(path="/ping")
+     * @Annotations\Get(path="/ping", name="get_action")
      */
     public function getAction()
     {
         return new JsonResponse(
-            'pong'
+            'pong get'
+        );
+    }
+
+    /**
+     * @Annotations\Post(path="/ping", name="post_action")
+     */
+    public function postAction()
+    {
+        return new JsonResponse(
+            'pong post'
+        );
+    }
+
+    /**
+     * @Annotations\Patch(path="/ping", name="potch_action")
+     */
+    public function patchAction()
+    {
+        return new JsonResponse(
+            'pong patch'
+        );
+    }
+
+    /**
+     * @Annotations\Delete(path="/ping", name="delete_action")
+     */
+    public function deleteAction()
+    {
+        return new JsonResponse(
+            'pong delete'
         );
     }
 
