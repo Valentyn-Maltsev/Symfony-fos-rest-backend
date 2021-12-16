@@ -24,9 +24,16 @@ class Tool
     private $toolType;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Material::class, inversedBy="tools")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $material;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $name;
+
 
     public function getId(): ?int
     {
@@ -45,14 +52,26 @@ class Tool
         return $this;
     }
 
-    public function getMaterial(): ?string
+    public function getMaterial(): ?Material
     {
         return $this->material;
     }
 
-    public function setMaterial(string $material): self
+    public function setMaterial(?Material $material): self
     {
         $this->material = $material;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
