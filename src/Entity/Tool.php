@@ -36,6 +36,16 @@ class Tool
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Operation::class, mappedBy="tool", orphanRemoval=true)
+     */
+    private $operations;
+
+    public function __construct()
+    {
+        $this->operations = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -81,5 +91,35 @@ class Tool
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setTool($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->removeElement($operation)) {
+            // set the owning side to null (unless already changed)
+            if ($operation->getTool() === $this) {
+                $operation->setTool(null);
+            }
+        }
+
+        return $this;
     }
 }
