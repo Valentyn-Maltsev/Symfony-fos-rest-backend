@@ -25,13 +25,13 @@ class ToolType
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Operation::class, inversedBy="toolTypes")
+     * @ORM\ManyToOne(targetEntity=OperationType::class, inversedBy="toolTypes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $operation;
+    private $operationType;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tool::class, mappedBy="toolTypeId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Tool::class, mappedBy="toolType", orphanRemoval=true)
      */
     private $tools;
 
@@ -57,14 +57,14 @@ class ToolType
         return $this;
     }
 
-    public function getOperation(): ?Operation
+    public function getOperationType(): ?OperationType
     {
-        return $this->operation;
+        return $this->operationType;
     }
 
-    public function setOperation(?Operation $operation): self
+    public function setOperationType(?OperationType $operationType): self
     {
-        $this->operation = $operation;
+        $this->operationType = $operationType;
 
         return $this;
     }
@@ -81,7 +81,7 @@ class ToolType
     {
         if (!$this->tools->contains($tool)) {
             $this->tools[] = $tool;
-            $tool->setToolTypeId($this);
+            $tool->setToolType($this);
         }
 
         return $this;
@@ -91,11 +91,16 @@ class ToolType
     {
         if ($this->tools->removeElement($tool)) {
             // set the owning side to null (unless already changed)
-            if ($tool->getToolTypeId() === $this) {
-                $tool->setToolTypeId(null);
+            if ($tool->getToolType() === $this) {
+                $tool->setToolType(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

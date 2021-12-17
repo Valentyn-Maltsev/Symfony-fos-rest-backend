@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\OperationRepository;
+use App\Repository\OperationTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=OperationRepository::class)
+ * @ORM\Entity(repositoryClass=OperationTypeRepository::class)
  */
-class Operation
+class OperationType
 {
     /**
      * @ORM\Id
@@ -25,7 +25,7 @@ class Operation
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=ToolType::class, mappedBy="operation_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=ToolType::class, mappedBy="operation_type_id", orphanRemoval=true)
      */
     private $toolTypes;
 
@@ -63,7 +63,7 @@ class Operation
     {
         if (!$this->toolTypes->contains($toolType)) {
             $this->toolTypes[] = $toolType;
-            $toolType->setOperationId($this);
+            $toolType->setOperationTypeId($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class Operation
     {
         if ($this->toolTypes->removeElement($toolType)) {
             // set the owning side to null (unless already changed)
-            if ($toolType->getOperationId() === $this) {
-                $toolType->setOperationId(null);
+            if ($toolType->getOperationTypeId() === $this) {
+                $toolType->setOperationTypeId(null);
             }
         }
 
