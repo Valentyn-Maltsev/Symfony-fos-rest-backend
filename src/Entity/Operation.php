@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\Operation1Repository;
+use App\Repository\OperationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,14 +46,10 @@ class Operation
     private $lead_time;
 
     /**
-     * @ORM\ManyToMany(targetEntity=TechSet::class, mappedBy="operations")
+     * @ORM\ManyToOne (targetEntity=TechSet::class, inversedBy="operations")
      */
-    private $techSets;
+    private $techSet;
 
-    public function __construct()
-    {
-        $this->techSets = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -123,15 +119,15 @@ class Operation
     /**
      * @return Collection|TechSet[]
      */
-    public function getTechSets(): Collection
+    public function getTechSet(): Collection
     {
-        return $this->techSets;
+        return $this->techSet;
     }
 
     public function addTechSet(TechSet $techSet): self
     {
-        if (!$this->techSets->contains($techSet)) {
-            $this->techSets[] = $techSet;
+        if (!$this->techSet->contains($techSet)) {
+            $this->techSet[] = $techSet;
             $techSet->addOperation($this);
         }
 
@@ -140,7 +136,7 @@ class Operation
 
     public function removeTechSet(TechSet $techSet): self
     {
-        if ($this->techSets->removeElement($techSet)) {
+        if ($this->techSet->removeElement($techSet)) {
             $techSet->removeOperation($this);
         }
 

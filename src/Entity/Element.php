@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ElementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
+ * @Serializer\ExclusionPolicy(Serializer\ExclusionPolicy::ALL)
+ *
  * @ORM\Entity(repositoryClass=ElementRepository::class)
  */
 class Element
@@ -24,11 +27,17 @@ class Element
 
     /**
      * @ORM\Column(type="string", length=100)
+     *
+     * @Serializer\Expose
+     * @Serializer\Groups({"name"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=10)
+     *
+     * @Serializer\Expose
+     * @Serializer\Groups({"alias"})
      */
     private $alias;
 

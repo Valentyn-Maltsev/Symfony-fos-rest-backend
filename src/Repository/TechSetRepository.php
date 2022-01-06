@@ -19,6 +19,22 @@ class TechSetRepository extends ServiceEntityRepository
         parent::__construct($registry, TechSet::class);
     }
 
+
+    public function findByPartId(int $id)
+    {
+        return $this->findBy(['part' => $id]);
+    }
+
+//    public function findByPartId($id)
+//    {
+//        return $this->createQueryBuilder('t')
+//            ->andWhere('t.part = :val')
+//            ->setParameter('val', $id)
+//            ->getQuery()
+//            ->getResult()
+//            ;
+//    }
+
     // /**
     //  * @return TechSet[] Returns an array of TechSet objects
     //  */
@@ -35,6 +51,7 @@ class TechSetRepository extends ServiceEntityRepository
         ;
     }
     */
+
 
     /*
     public function findOneBySomeField($value): ?TechSet

@@ -12,15 +12,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Operation[]    findAll()
  * @method Operation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class Operation1Repository extends ServiceEntityRepository
+class OperationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Operation::class);
     }
 
+    public function findByTechSetId(int $id)
+    {
+        return $this->findBy(['techSet' => $id]);
+    }
+
     // /**
-    //  * @return Operation1[] Returns an array of Operation1 objects
+    //  * @return Operation[] Returns an array of Operation objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +42,7 @@ class Operation1Repository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Operation1
+    public function findOneBySomeField($value): ?Operation
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.exampleField = :val')

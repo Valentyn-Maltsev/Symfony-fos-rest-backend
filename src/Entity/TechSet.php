@@ -25,12 +25,12 @@ class TechSet
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Operation::class, inversedBy="techSets")
+     * @ORM\OneToMany(targetEntity=Operation::class, mappedBy="techSet", cascade={"persist"}, orphanRemoval=true)
      */
     private $operations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Part::class, inversedBy="techSets")
+     * @ORM\ManyToOne(targetEntity=Part::class, inversedBy="techSet")
      * @ORM\JoinColumn(nullable=false)
      */
     private $part;
@@ -83,6 +83,7 @@ class TechSet
 
     public function getPart(): ?Part
     {
+//        dd(1); die();
         return $this->part;
     }
 
@@ -91,5 +92,11 @@ class TechSet
         $this->part = $part;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+        // TODO: Implement __toString() method.
     }
 }

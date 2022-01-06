@@ -19,7 +19,8 @@ class TechSetCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name'),
-//            AssociationField::new('Part'),
+            AssociationField::new('part'),
+            AssociationField::new('operations'),
         ];
     }
 

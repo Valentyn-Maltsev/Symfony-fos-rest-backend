@@ -6,8 +6,11 @@ use App\Repository\PartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
+ * @Serializer\ExclusionPolicy(Serializer\ExclusionPolicy::ALL)
+ *
  * @ORM\Entity(repositoryClass=PartRepository::class)
  */
 class Part
@@ -16,16 +19,22 @@ class Part
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Groups({"id", "name"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     *
+     * @Serializer\Expose
+     * @Serializer\Groups({"name"})
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=TechSet::class, mappedBy="Part", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=TechSet::class, mappedBy="part", cascade={"persist"}, orphanRemoval=true)
      */
     private $techSets;
 
@@ -56,7 +65,6 @@ class Part
      */
     public function getTechSets(): Collection
     {
-//        dd($this->techSets); die();
         return $this->techSets;
     }
 
@@ -80,5 +88,16 @@ class Part
         }
 
         return $this;
+    }
+
+    public function getPart()
+    {
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+        // TODO: Implement __toString() method.
     }
 }

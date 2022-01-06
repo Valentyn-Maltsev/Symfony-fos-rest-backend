@@ -1,7 +1,7 @@
-jms_serializer:
-    visitors:
-        xml_serialization:
-            format_output: '%kernel.debug%'
+#jms_serializer:
+#    visitors:
+#        xml_serialization:
+#            format_output: '%kernel.debug%'
 #    metadata:
 #        auto_detection: false
 #        directories:
@@ -11,3 +11,19 @@ jms_serializer:
 #            another-name:
 #                namespace_prefix: "My\\BarBundle"
 #                path: "@MyBarBundle/Resources/config/serializer"
+
+jms_serializer:
+    property_naming:
+        separator:  _
+        lower_case: true
+
+    metadata:
+        cache: file
+        debug: "%kernel.debug%"
+        file_cache:
+          dir: "%kernel.cache_dir%/serializer"
+#        directories:
+#            AppBundle:
+#                namespace_prefix: "AppBundle"
+#                path: "%kernel.project_dir%/config/serializer/AppBundle"
+        auto_detection: true

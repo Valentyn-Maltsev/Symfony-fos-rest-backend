@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Material;
+use App\Entity\Operation;
 use App\Entity\OperationType;
 use App\Entity\Part;
 use App\Entity\TechSet;
@@ -42,5 +43,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Parts', 'fas fa-list', Part::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class);
         yield MenuItem::linkToCrud('TechSets', 'fas fa-list', TechSet::class);
+        yield MenuItem::linkToCrud('Operations', 'fas fa-list', Operation::class);
     }
 }

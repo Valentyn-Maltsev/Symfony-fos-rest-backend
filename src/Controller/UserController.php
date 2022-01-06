@@ -2,12 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Material;
+use App\Entity\OperationType;
+use App\Form\User\MaterialType;
+use App\Helpers\WorkHelper;
+use App\Repository\ElementRepository;
+use App\Repository\MaterialRepository;
+use App\Repository\PartRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\HttpFoundation\Request;
+use function Webmozart\Assert\Tests\StaticAnalysis\false;
 
 class UserController extends AbstractFOSRestController
 {
@@ -50,6 +62,10 @@ class UserController extends AbstractFOSRestController
             'pong delete'
         );
     }
+
+
+
+
 
     public function getUsersAction()
     {

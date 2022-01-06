@@ -1,0 +1,20 @@
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+
+    <h3>Tags</h3>
+    <ul class="tags">
+        <br>
+        {% for techSet in form.techSets %}
+            <li>{{ form_row(techSet.name) }}</li>
+            {% for operation in techSet.operations %}
+                {{ form_row(operation.name) }}
+            {% endfor %}
+            <br>
+        {% endfor %}
+    </ul>
+    {# don't render unrendered fields #}
+    {{ form_end(form, {'render_rest': false}) }}
+
+{% endblock %}
