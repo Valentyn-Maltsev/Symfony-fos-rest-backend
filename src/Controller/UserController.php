@@ -2,35 +2,33 @@
 
 namespace App\Controller;
 
-use App\Entity\Material;
-use App\Entity\OperationType;
-use App\Form\User\MaterialType;
-use App\Helpers\WorkHelper;
-use App\Repository\ElementRepository;
-use App\Repository\MaterialRepository;
-use App\Repository\PartRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Context\Context;
+use App\Repository\UserProfileRepository;
+use App\Repository\UserRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations;
-use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use FOS\RestBundle\Controller\Annotations\View;
-use Symfony\Component\HttpFoundation\Request;
-use function Webmozart\Assert\Tests\StaticAnalysis\false;
 
 class UserController extends AbstractFOSRestController
 {
     /**
-     * @Annotations\Get(path="/ping", name="get_action")
+     * @Annotations\Get(path="/api/users", name="get_all_users")
+     *
+     * @param UserRepository $userRepository
      */
-    public function getAction()
+    public function getUsersAction(UserRepository $userRepository)
     {
-        return new JsonResponse(
-            'pong get'
-        );
+        return $userRepository->findAll();
+    }
+
+    /**
+     * @Annotations\Get(path="/api/user-profile/{id}", name="get_user_profile")
+     *
+     * @param int $userId
+     * @param UserProfileRepository $userProfileRepository
+     */
+    public function getUserProfileAction(int $id, UserProfileRepository $userProfileRepository)
+    {
+        return $userProfileRepository->findOneBy(['user' => $id]);
     }
 
     /**
@@ -67,14 +65,14 @@ class UserController extends AbstractFOSRestController
 
 
 
-    public function getUsersAction()
-    {
-        var_dump(1); die();
-//        $data = ...; // get data, in this case list of users.
-        $view = $this->view($data, 200);
-
-        return $this->handleView($view);
-    }
+//    public function getUsersAction()
+//    {
+//        var_dump(1); die();
+////        $data = ...; // get data, in this case list of users.
+//        $view = $this->view($data, 200);
+//
+//        return $this->handleView($view);
+//    }
 
     public function redirectAction()
     {
