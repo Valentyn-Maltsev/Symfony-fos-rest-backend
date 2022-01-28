@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\UserTransactionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,6 +30,40 @@ class UserTransactionController extends AbstractFOSRestController
     public function getUserTransactionsAction(int $id, UserTransactionRepository $userTransactionRepository)
     {
         return $userTransactionRepository->findBy(['user' => $id]);
+    }
+
+
+    /**
+     * @Annotations\Get(path="/api/approve-transaction/{id}", name="approve_transaction")
+     * @param int $id
+     * @param UserTransactionRepository $userTransactionRepository
+     * @param EntityManagerInterface $entityManager
+     * @return void
+     */
+    public function approveTransactionAction(int $id, UserTransactionRepository $userTransactionRepository, EntityManagerInterface $entityManager)
+    {
+        $transaction = $userTransactionRepository->find($id);
+
+        $transaction->setStatus('approved');
+        $entityManager->persist($transaction);
+        $entityManager->flush();
+    }
+
+
+    /**
+     * @Annotations\Get(path="/api/decline-transaction/{id}", name="decline_transaction")
+     * @param int $id
+     * @param UserTransactionRepository $userTransactionRepository
+     * @param EntityManagerInterface $entityManager
+     * @return void
+     */
+    public function declineTransactionAction(int $id, UserTransactionRepository $userTransactionRepository, EntityManagerInterface $entityManager)
+    {
+        $transaction = $userTransactionRepository->find($id);
+
+        $transaction->setStatus('declined');
+        $entityManager->persist($transaction);
+        $entityManager->flush();
     }
 
 }
