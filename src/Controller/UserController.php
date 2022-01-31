@@ -20,8 +20,12 @@ class UserController extends AbstractFOSRestController
      * @param UserRepository $userRepository
      * @IsGranted("ROLE_USER")
      */
-    public function getUsersAction(UserRepository $userRepository)
+    public function getUsersAction(UserRepository $userRepository, Request $request)
     {
+//        var_dump($request->get('email')); die();
+
+        return $userRepository->findUsersByFilters($request->get('id'), $request->get('email'));
+
         return $userRepository->findAll();
     }
 
@@ -36,6 +40,37 @@ class UserController extends AbstractFOSRestController
         return $userProfileRepository->findOneBy(['user' => $id]);
     }
 
+    /**
+     * @Annotations\Post(path="/api/user/update/{id}", name="update_user")
+     *
+     * @param int $id
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return mixed
+     */
+    public function postUserAction(
+        int $id,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    )
+    {
+        $user = $userRepository->find($id);
+
+//        var_dump($request->get('roles')); die();
+//        var_dump($user->getRoles()); die();
+
+        $user
+            ->setEmail($request->get('email'))
+            ->setRoles($request->get('roles'))
+        ;
+
+//        var_dump($user->getRoles()); die();
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+    }
 
     /**
      * @Annotations\Post(path="/api/user-profile/update/{id}", name="update_user_profile")
@@ -53,9 +88,6 @@ class UserController extends AbstractFOSRestController
         EntityManagerInterface $entityManager
     )
     {
-//        $firstName = $request->get('first_name');
-//        $lastName = $request->get('last_name');
-
         $userProfile = $userProfileRepository->findOneBy(['user' => $id]);
 
         $userProfile
@@ -65,11 +97,6 @@ class UserController extends AbstractFOSRestController
 
         $entityManager->persist($userProfile);
         $entityManager->flush();
-
-//        return [
-//            $firstName,
-//            $lastName
-//        ];
     }
 
 
