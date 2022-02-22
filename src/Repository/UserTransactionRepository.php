@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\UserTransaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,22 @@ class UserTransactionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserTransaction::class);
+    }
+
+    public function findTransactionByFilters(string $amount, string $status, string $type, string $email)
+    {
+        return $this->createQueryBuilder('user_transaction')
+            ->andWhere('user_transaction.amount LIKE :amount')
+            ->setParameter('amount', '%' . $amount . '%')
+            ->andWhere('user_transaction.status LIKE :status')
+            ->setParameter('status', '%' . $status . '%')
+            ->andWhere('user_transaction.type LIKE :type')
+            ->setParameter('type', '%' . $type . '%')
+            ->join('App\Entity\User', 'u', Join::WITH, 'u.id = user_transaction.user')
+            ->andWhere('u.email LIKE :email')
+            ->setParameter('email', '%' . $email . '%')
+            ->getQuery()
+            ->execute();
     }
 
     // /**

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\UserTransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations;
@@ -16,9 +17,18 @@ class UserTransactionController extends AbstractFOSRestController
      * @param UserTransactionRepository $userTransactionRepository
      * @return \App\Entity\UserTransaction[]
      */
-    public function getTransactionsAction(UserTransactionRepository $userTransactionRepository)
+    public function getTransactionsAction(UserTransactionRepository $userTransactionRepository, Request $request)
     {
-        return $userTransactionRepository->findAll();
+//        var_dump($request->get('status')); die();
+
+        return $userTransactionRepository->findTransactionByFilters(
+            $request->get('amount'),
+            $request->get('status'),
+            $request->get('type'),
+            $request->get('email')
+        );
+
+//        return $userTransactionRepository->findAll();
     }
 
 

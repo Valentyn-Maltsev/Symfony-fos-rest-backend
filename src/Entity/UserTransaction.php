@@ -51,6 +51,13 @@ class UserTransaction
      */
     private $dateCreated;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,6 +107,18 @@ class UserTransaction
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
